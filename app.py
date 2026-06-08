@@ -97,7 +97,6 @@ def generate(data: FormData):
     if not os.path.exists(output_path):
         return {"status": "error", "message": "PDF not created"}
 
-    # Base64 pro Power Automate
     with open(output_path, "rb") as f:
         pdf_base64 = base64.b64encode(f.read()).decode("utf-8")
 
