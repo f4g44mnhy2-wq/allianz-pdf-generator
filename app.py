@@ -99,8 +99,8 @@ def generate(data: FormData):
         pdf_data
     )
 
-    return FileResponse(
-        path=output_path,
-        media_type="application/pdf",
-        filename="allianz.pdf"
-    )
+ return {
+    "status": "ok",
+    "message": "PDF created",
+    "file": "output.pdf"
+}
