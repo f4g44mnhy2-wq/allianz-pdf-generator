@@ -99,12 +99,6 @@ def generate(data: FormData):
         pdf_data
     )
 
-    fillpdfs.write_fillable_pdf(
-        "formular_allianz.pdf",
-        output_path,
-        pdf_data
-    )
-
     return {
         "status": "ok",
         "message": "PDF created",
