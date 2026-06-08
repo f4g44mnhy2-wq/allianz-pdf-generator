@@ -16,7 +16,6 @@ COMPANY_DATA = {
     "Cislo_uctu": "1481817349/0800",
 }
 
-# 🟢 INPUT z Forms
 class FormData(BaseModel):
     jmeno: str = ""
     adresa: str = ""
@@ -49,10 +48,9 @@ def generate(data: FormData):
 
     print("🔥 DORAZILO Z FORMS:")
     print(data.model_dump())
-
     print("📄 TEMPLATE EXISTS:", os.path.exists("formular_allianz.pdf"))
 
-    # datum formát DD.MM.YYYY
+    # datum format
     datum_fmt = ""
     if data.datum:
         try:
