@@ -1,9 +1,8 @@
 from fastapi import FastAPI
-from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from fillpdf import fillpdfs
-
-import os   # 👈 sem
+import os
+import base64
 
 app = FastAPI()
 
@@ -97,14 +96,24 @@ def generate(data: FormData):
 
     output_path = "/tmp/output.pdf"
 
+    # 🟢 Vygenerování PDF
     fillpdfs.write_fillable_pdf(
         "formular_allianz.pdf",
         output_path,
         pdf_data
     )
 
+    # 🟢 Kontrola souboru
+    if not os.path.exists(output_path):
+        return {"status": "error", "message": "PDF not created"}
+
+    # 🟢 převod do base64 (pro Power Automate)
+    with open(output_path, "rb") as f:
+        pdf_base64 = base64.b64encode(f.read()).decode("utf-8")
+
     return {
         "status": "ok",
         "message": "PDF created",
-        "file": "output.pdf"
+        "filename": "output.pdf",
+        "content_base64": pdf_base64
     }
