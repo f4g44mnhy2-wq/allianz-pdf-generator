@@ -3,6 +3,8 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from fillpdf import fillpdfs
 
+import os   # 👈 sem
+
 app = FastAPI()
 
 # 🟢 pevná firemní data
@@ -54,6 +56,8 @@ def generate(data: FormData):
 
     print("🔥 DORAZILO Z FORMS:")
     print(data.model_dump())
+
+    print("📄 TEMPLATE EXISTS:", os.path.exists("formular_allianz.pdf"))
 
     # datum do formátu DD.MM.YYYY
     datum_fmt = ""
