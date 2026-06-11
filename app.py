@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from fillpdf import fillpdfs
+import uuid
 
 app = FastAPI()
 
@@ -39,6 +40,8 @@ class FormData(BaseModel):
 
     cinnost_na_zaklade: str = ""
 
+    hruby_vydelek: str = ""
+
 
 def safe(v):
     return "" if v is None else str(v)
@@ -63,6 +66,9 @@ def generate(data: FormData):
             datum_fmt = f"{d}.{m}.{y}"
         except Exception:
             datum_fmt = data.datum
+
+    # 🟢 každé PDF má unikátní název (DŮLEŽITÉ PRO RENDER)
+    output_path = f"/tmp/output_{uuid.uuid4()}.pdf"
 
     pdf_data = {
         **COMPANY_DATA,
@@ -89,9 +95,8 @@ def generate(data: FormData):
         "pojistna_udalost_popis": safe(data.pojistna_udalost_popis),
 
         "ucetnictvi": "vedeme",
+        "hruby_vydelek": safe(data.hruby_vydelek),
     }
-
-    output_path = "/tmp/output.pdf"
 
     fillpdfs.write_fillable_pdf(
         "formular_allianz.pdf",
